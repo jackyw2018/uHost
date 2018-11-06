@@ -1,27 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,900');
+@import url('https://fonts.googleapis.com/css?family=Anton');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
+:root {
+    /* defining variables */
+    --dark-green: #0e4f1f; 
+    --highlight-color: #ff1b68;
+}
+
 * {
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
+    height: 100%;
     font-family: 'Montserrat', sans-serif;
     margin: 0;
-    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: 3.5rem auto fit-content(8rem);
+    grid-template-areas: "header"
+                         "main"
+                         "footer";
+    /* padding-top: 3.5rem;  */
 }
 
 main {
-    min-height: calc(100vh - 3.5rem - 8em);
-    margin-top: 3.5rem;
+    grid-area: main;
 }
 
 .backdrop {
-    position: fixed;
     display: none;
+    opacity: 0;
+    position: fixed;
     z-index: 100;
     height: 100vh;
     width: 100vw;
     background: rgba(0, 0, 0, 0.5);
     top: 0;
     left: 0;
+    transition: opacity 0.2s linear;
 }
 
 .main-header {
@@ -31,11 +52,12 @@ main {
     position: fixed;
     z-index: 1;
     top: 0;
-}
-
-.main-header>div {
-    display: inline-block;
-    vertical-align: middle;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkite-flex;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .toggle-button {
@@ -64,13 +86,11 @@ main {
     color: #0e4f1f;
     text-decoration: none;
     font-weight: bold;
-    height: 2.5rem;
-    display: inline-block;
-    vertical-align: middle;
 }
 
 .main-header__brand img {
-    height: 100%;
+    height: 2.5rem;
+    vertical-align: middle;
 }
 
 .main-nav {
@@ -81,11 +101,12 @@ main {
     margin: 0;
     padding: 0;
     list-style: none;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .main-nav__item {
-    display: inline-block;
-    margin: 0 2rem;
+    margin: 0 1rem;
 }
 
 .main-nav__item a,
@@ -100,6 +121,10 @@ main {
 .main-nav__item a:active {
     color: white;
     border-bottom: 5px solid white;
+}
+
+.main-nav__item--cta {
+    animation: wiggle 400ms 3s 8 none;
 }
 
 .main-nav__item--cta a,
@@ -123,18 +148,21 @@ main {
     background: black;
     padding: 2rem;
     margin-top: 3rem;
+    grid-area: footer;
 }
 
 .main-footer__links {
     list-style: none;
     margin: 0;
     padding: 0;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .main-footer__link {
     display: block;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
 }
 
 .main-footer__link a {
@@ -150,8 +178,10 @@ main {
 /* mobile-nav styling */
 
 .mobile-nav {
-    display: none;
     position: fixed;
+    display: block;
+    transform: translateX(-100%);
+    transition: transform 300ms ease-out 100ms; 
     z-index: 101;
     top: 0;
     left: 0;
@@ -161,12 +191,14 @@ main {
 }
 
 .mobile-nav__items {
-    width: 90%;
     height: 100%;
     list-style: none;
-    margin: 10% auto;
     padding: 0;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
 
 .mobile-nav__item {
@@ -180,10 +212,10 @@ main {
 /* button styling */
 
 .button {
-    background: #0e4f1f;
+    background: var(--dark-green, #0e4f1f);
     color: white;
     font: inherit;
-    border: 1.5px solid #0e4f1f;
+    border: 1.5px solid var(--dark-green, #0e4f1f);
     padding: 8px;
     border-radius: 8px;
     font-weight: bold;
@@ -193,7 +225,7 @@ main {
 .button:hover,
 .button:active {
     background: white;
-    color: #0e4f1f;
+    color: var(--dark-green, #0e4f1f);
 }
 
 .button:focus {
@@ -209,6 +241,8 @@ main {
 
 .open {
     display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 @media (min-width: 40rem) {
@@ -216,16 +250,30 @@ main {
         display: none;
     }
     .main-nav {
-        display: inline-block;
-        text-align: right;
-        width: calc(100% - 44px);
-        vertical-align: middle;
+        display: flex;
     }
 }
 
 @media (min-width: 40rem) {
     .main-footer__link {
-        display: inline-block;
         margin: 0 1rem;
+    }
+    .main-footer__links {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+@keyframes wiggle {
+    0% {
+        transform: rotateZ(0);
+    }
+    
+    50% {
+        transform: rotateZ(-10deg);
+    }
+
+    100% {
+        transform: rotateZ(10deg);
     }
 }
